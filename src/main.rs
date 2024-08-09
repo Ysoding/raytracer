@@ -1,14 +1,16 @@
+use std::env;
 use std::io;
 
+use anyhow::Result;
 use log::info;
 
-mod utils;
-use utils::*;
-mod vec3;
-use vec3::*;
+mod tracer;
+use tracer::utils::*;
+use tracer::vec3::*;
 
-fn main() {
-    env_logger::init();
+fn main() -> Result<()> {
+    env::set_var("RUST_LOG", "debug");
+    pretty_env_logger::init();
 
     let image_width = 256;
     let image_height = 256;
@@ -25,8 +27,9 @@ fn main() {
                     j as f64 / ((image_height - 1) as f64),
                     0.0,
                 ),
-            );
+            )?;
         }
     }
-    info!("Done.")
+    info!("Done.");
+    Ok(())
 }
