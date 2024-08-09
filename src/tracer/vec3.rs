@@ -125,10 +125,10 @@ impl Vec3 {
     }
 
     pub fn length(&self) -> f64 {
-        self.squard_length().sqrt()
+        self.length_squard().sqrt()
     }
 
-    pub fn squard_length(&self) -> f64 {
+    pub fn length_squard(&self) -> f64 {
         self.x * self.x + self.y * self.y + self.z * self.z
     }
 
@@ -216,7 +216,7 @@ mod tests {
 
     #[test]
     fn test_squared_length() {
-        assert_eq!(9.0, Vec3::new(2.0, -2.0, 1.0).squard_length());
+        assert_eq!(9.0, Vec3::new(2.0, -2.0, 1.0).length_squard());
     }
 
     #[test]

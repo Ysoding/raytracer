@@ -5,7 +5,7 @@ install:
 
 .PHONY: feh
 open:
-	feh $(ARGS)
+	feh image.ppm
 
 
 .PHONY: generate
