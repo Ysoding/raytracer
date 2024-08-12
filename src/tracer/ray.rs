@@ -1,20 +1,17 @@
-use crate::Vec3;
+use super::vec3::Vec3;
 
 pub struct Ray {
-    pub orig: Vec3,
-    pub dir: Vec3,
+    pub origin: Vec3,
+    pub direction: Vec3,
 }
 
 impl Ray {
     pub fn new(origin: Vec3, direction: Vec3) -> Self {
-        Self {
-            orig: origin,
-            dir: direction,
-        }
+        Self { origin, direction }
     }
 
     pub fn at(&self, t: f64) -> Vec3 {
-        self.orig + self.dir * t
+        self.origin + self.direction * t
     }
 }
 

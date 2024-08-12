@@ -2,7 +2,7 @@ use std::io::Write;
 
 use anyhow::Result;
 
-use crate::Vec3;
+use super::vec3::Vec3;
 
 pub fn write_color(out: &mut impl Write, color: Vec3) -> Result<()> {
     let ir = (255.999 * color.x) as i32;
