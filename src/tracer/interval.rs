@@ -20,6 +20,16 @@ impl Interval {
         self.min < val && val < self.max
     }
 
+    pub fn clamp(&self, val: f64) -> f64 {
+        if val < self.min {
+            return val;
+        }
+        if val > self.max {
+            return val;
+        }
+        val
+    }
+
     pub fn empty() -> Self {
         Self {
             min: std::f64::INFINITY,

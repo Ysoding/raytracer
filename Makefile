@@ -11,4 +11,3 @@ open: generate
 .PHONY: generate
 generate:
 	cargo run > image.ppm
-
