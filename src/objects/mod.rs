@@ -1,3 +1,3 @@
 pub mod sphere;
 
-// pub use sphere::*;
+pub use sphere::*;

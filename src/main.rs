@@ -3,14 +3,10 @@ use log::info;
 use std::env;
 use std::io;
 
-use raytracer::hittable::*;
-use raytracer::ray::*;
-use raytracer::sphere::*;
-use raytracer::utils::*;
-use raytracer::vec3::*;
+use raytracer::*;
 
 fn ray_color(ray: &Ray, world: &dyn Hittable) -> Vec3 {
-    if let Some(hr) = world.hit(ray, 0.0, f64::INFINITY) {
+    if let Some(hr) = world.hit(ray, Interval::new(0.0, f64::INFINITY)) {
         return (hr.normal + Vec3::new(1.0, 1.0, 1.0)) * 0.5;
     }
 
