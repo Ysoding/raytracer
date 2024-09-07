@@ -1,11 +1,17 @@
 use crate::tracer::{hit_record::HitRecord, hittable::Hittable, ray::Ray, vec3::Vec3};
 
-pub struct SphereRenderer {
+pub struct Sphere {
     center: Vec3,
     radius: f64,
 }
 
-impl Hittable for SphereRenderer {
+impl Sphere {
+    pub fn new(center: Vec3, radius: f64) -> Self {
+        Self { center, radius }
+    }
+}
+
+impl Hittable for Sphere {
     fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord> {
         let oc = self.center - ray.origin;
         let a = ray.direction.length_squard();
@@ -29,9 +35,13 @@ impl Hittable for SphereRenderer {
         }
 
         let p = ray.at(root);
-        let normal = (p - self.center) / self.radius;
+        let outward_normal = (p - self.center) / self.radius;
         let t = root;
 
-        Some(HitRecord { normal, p, t })
+        let mut hr = HitRecord::new(outward_normal, p, t, false);
+
+        hr.set_face_normal(ray, outward_normal);
+
+        Some(hr)
     }
 }

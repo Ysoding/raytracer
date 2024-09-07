@@ -4,7 +4,7 @@ install:
 	sudo apt-get install feh
 
 .PHONY: feh
-open:
+open: generate
 	feh image.ppm
 
 
