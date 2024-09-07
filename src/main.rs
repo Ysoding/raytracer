@@ -20,6 +20,7 @@ fn main() -> Result<()> {
     camera.aspect_radio = 16.0 / 9.0;
     camera.image_width = 400.0;
     camera.samples_per_pixel = 100;
+    camera.max_depth = 50;
 
     camera.render(&world)?;
     Ok(())

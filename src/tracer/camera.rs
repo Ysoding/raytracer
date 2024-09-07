@@ -3,12 +3,16 @@ use std::io;
 use anyhow::Result;
 use log::info;
 
-use crate::{random_f64_range, write_color, Hittable, Interval, Ray, Vec3};
+use crate::{
+    random_f64_range, random_on_hemisphere, random_uint_vector, write_color, Hittable, Interval,
+    Ray, Vec3,
+};
 
 pub struct Camera {
     pub aspect_radio: f64,      // Ratio of image width over height
     pub image_width: f64,       // Rendered image width in pixel count
     pub samples_per_pixel: i32, // Count of random samples for each pixel
+    pub max_depth: i32,         // Maximum number of ray bounces into scene
     image_height: f64,          // Rendered image height
     center: Vec3,               // Camera center
     pixel00_loc: Vec3,          // Location of pixel 0, 0
@@ -23,6 +27,7 @@ impl Default for Camera {
             aspect_radio: 1.0,
             image_width: 100.0,
             samples_per_pixel: 10,
+            max_depth: 10,
             image_height: Default::default(),
             center: Default::default(),
             pixel00_loc: Default::default(),
@@ -46,7 +51,7 @@ impl Camera {
                 let mut pixel_color = Vec3::zero();
                 for _ in 0..self.samples_per_pixel {
                     let ray = self.get_ray(i, j);
-                    pixel_color += self.ray_color(&ray, world);
+                    pixel_color += self.ray_color(&ray, world, self.max_depth);
                 }
 
                 write_color(&mut io::stdout(), pixel_color * self.pixel_samples_scale)?;
@@ -86,9 +91,16 @@ impl Camera {
         self.pixel00_loc = viewport_upper_left + (self.pixel_delta_u + self.pixel_delta_v) * 0.5;
     }
 
-    fn ray_color(&self, ray: &Ray, world: &dyn Hittable) -> Vec3 {
-        if let Some(hr) = world.hit(ray, Interval::new(0.0, f64::INFINITY)) {
-            return (hr.normal + Vec3::new(1.0, 1.0, 1.0)) * 0.5;
+    fn ray_color(&self, ray: &Ray, world: &dyn Hittable, depth: i32) -> Vec3 {
+        // If we've exceeded the ray bounce limit, no more light is gathered.
+        if depth <= 0 {
+            return Vec3::zero();
+        }
+
+        if let Some(hr) = world.hit(ray, Interval::new(0.001, f64::INFINITY)) {
+            // let direction = random_on_hemisphere(hr.normal);
+            let direction = hr.normal + random_uint_vector();
+            return self.ray_color(&Ray::new(hr.p, direction), world, depth - 1) * 0.5;
         }
 
         let unit_directionection = ray.direction.unit();

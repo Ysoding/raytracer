@@ -7,6 +7,53 @@ pub struct Vec3 {
     pub z: f64,
 }
 
+impl Vec3 {
+    pub fn new(x: f64, y: f64, z: f64) -> Self {
+        Self { x, y, z }
+    }
+
+    pub fn zero() -> Vec3 {
+        Vec3 {
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+        }
+    }
+
+    pub fn ones() -> Vec3 {
+        Vec3 {
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+        }
+    }
+
+    pub fn length(&self) -> f64 {
+        self.length_squard().sqrt()
+    }
+
+    pub fn length_squard(&self) -> f64 {
+        self.x * self.x + self.y * self.y + self.z * self.z
+    }
+
+    pub fn unit(&self) -> Vec3 {
+        let length = self.length();
+        Self::new(self.x / length, self.y / length, self.z / length)
+    }
+
+    pub fn dot(&self, other: Vec3) -> f64 {
+        self.x * other.x + self.y * other.y + self.z * other.z
+    }
+
+    pub fn cross(&self, other: Vec3) -> Vec3 {
+        Self {
+            x: self.y * other.z - self.z * other.y,
+            y: self.z * other.x - self.x * other.z,
+            z: self.x * other.y - self.y * other.x,
+        }
+    }
+}
+
 impl Neg for Vec3 {
     type Output = Vec3;
 
@@ -119,53 +166,6 @@ impl Div<f64> for Vec3 {
             x: self.x / rhs,
             y: self.y / rhs,
             z: self.z / rhs,
-        }
-    }
-}
-
-impl Vec3 {
-    pub fn new(x: f64, y: f64, z: f64) -> Self {
-        Self { x, y, z }
-    }
-
-    pub fn zero() -> Vec3 {
-        Vec3 {
-            x: 0.0,
-            y: 0.0,
-            z: 0.0,
-        }
-    }
-
-    pub fn ones() -> Vec3 {
-        Vec3 {
-            x: 1.0,
-            y: 1.0,
-            z: 1.0,
-        }
-    }
-
-    pub fn length(&self) -> f64 {
-        self.length_squard().sqrt()
-    }
-
-    pub fn length_squard(&self) -> f64 {
-        self.x * self.x + self.y * self.y + self.z * self.z
-    }
-
-    pub fn unit(&self) -> Vec3 {
-        let length = self.length();
-        Self::new(self.x / length, self.y / length, self.z / length)
-    }
-
-    pub fn dot(&self, other: Vec3) -> f64 {
-        self.x * other.x + self.y * other.y + self.z * other.z
-    }
-
-    pub fn cross(&self, other: Vec3) -> Vec3 {
-        Self {
-            x: self.y * other.z - self.z * other.y,
-            y: self.z * other.x - self.x * other.z,
-            z: self.x * other.y - self.y * other.x,
         }
     }
 }
