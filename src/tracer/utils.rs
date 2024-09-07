@@ -61,3 +61,7 @@ pub fn linear_to_gamma(linear_component: f64) -> f64 {
         0.0
     }
 }
+
+pub fn reflect(v: Vec3, n: Vec3) -> Vec3 {
+    v - 2.0 * v.dot(n) * n
+}

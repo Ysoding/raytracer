@@ -1,5 +1,5 @@
 
-# Raytracer.rs
+# Raytracer
 
 
-- "Ray Tracing in One Weekend ([online book](https://raytracing.github.io/books/RayTracingInOneWeekend.html#overview))" implemented in Rust 
+- "Ray Tracing in One Weekend ([github](https://raytracing.github.io/books/RayTracingInOneWeekend.html#overview))" implemented in Rust 

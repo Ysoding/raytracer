@@ -52,6 +52,12 @@ impl Vec3 {
             z: self.x * other.y - self.y * other.x,
         }
     }
+
+    /// Return true if the vector is close to zero in all dimensions.
+    pub fn near_zero(&self) -> bool {
+        let s = 1e-8;
+        (self.x.abs() < s) && (self.y.abs() < s) && (self.z.abs() < s)
+    }
 }
 
 impl Neg for Vec3 {
@@ -122,6 +128,17 @@ impl Sub for Vec3 {
     }
 }
 
+impl Mul<Vec3> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: Vec3) -> Self::Output {
+        Self::Output {
+            x: self.x * rhs.x,
+            y: self.y * rhs.y,
+            z: self.z * rhs.z,
+        }
+    }
+}
 impl Mul<f32> for Vec3 {
     type Output = Vec3;
 

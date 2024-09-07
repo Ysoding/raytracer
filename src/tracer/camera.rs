@@ -3,10 +3,7 @@ use std::io;
 use anyhow::Result;
 use log::info;
 
-use crate::{
-    random_f64_range, random_on_hemisphere, random_uint_vector, write_color, Hittable, Interval,
-    Ray, Vec3,
-};
+use crate::{random_f64_range, write_color, Hittable, Interval, Ray, Vec3};
 
 pub struct Camera {
     pub aspect_radio: f64,      // Ratio of image width over height
@@ -98,9 +95,10 @@ impl Camera {
         }
 
         if let Some(hr) = world.hit(ray, Interval::new(0.001, f64::INFINITY)) {
-            // let direction = random_on_hemisphere(hr.normal);
-            let direction = hr.normal + random_uint_vector();
-            return self.ray_color(&Ray::new(hr.p, direction), world, depth - 1) * 0.5;
+            if let Some(sr) = hr.material.scatter(ray, &hr) {
+                return sr.attenuation * self.ray_color(&sr.scatter_ray, world, depth - 1);
+            }
+            return Vec3::zero();
         }
 
         let unit_directionection = ray.direction.unit();
