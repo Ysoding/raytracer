@@ -1,5 +1,5 @@
 use anyhow::Result;
-use raytracer::{Camera, Lambertian, Metal};
+use raytracer::{Camera, Dielectric, Lambertian, Metal};
 use std::env;
 
 use raytracer::{HittableList, Sphere, Vec3};
@@ -12,7 +12,8 @@ fn main() -> Result<()> {
 
     let material_ground = Lambertian::new(Vec3::new(0.8, 0.8, 0.0));
     let material_center = Lambertian::new(Vec3::new(0.1, 0.2, 0.5));
-    let material_left = Metal::new(Vec3::new(0.8, 0.8, 0.8), 0.3);
+    let material_left = Dielectric::new(1.50);
+    let material_bubble = Dielectric::new(1.00 / 1.50);
     let material_right = Metal::new(Vec3::new(0.8, 0.6, 0.2), 1.0);
 
     world.objects.push(Box::new(Sphere::new(
@@ -29,6 +30,11 @@ fn main() -> Result<()> {
         Vec3::new(-1.0, 0.0, -1.0),
         0.5,
         material_left,
+    )));
+    world.objects.push(Box::new(Sphere::new(
+        Vec3::new(-1.0, 0.0, -1.0),
+        0.4,
+        material_bubble,
     )));
     world.objects.push(Box::new(Sphere::new(
         Vec3::new(1.0, 0.0, -1.0),
