@@ -22,6 +22,27 @@ pub fn write_color(out: &mut impl Write, color: Vec3) -> Result<()> {
     Ok(())
 }
 
+pub fn degrees_to_radians(degress: f64) -> f64 {
+    degress * std::f64::consts::PI / 180.0
+}
+
+pub fn random_in_unit_disk() -> Vec3 {
+    loop {
+        let p = Vec3::new(
+            random_f64_range(-1.0, 1.0),
+            random_f64_range(-1.0, 1.0),
+            0.0,
+        );
+        if p.length_squard() < 1.0 {
+            return p;
+        }
+    }
+}
+
+pub fn random_f64() -> f64 {
+    random_f64_range(0.0, 1.0)
+}
+
 pub fn random_f64_range(min: f64, max: f64) -> f64 {
     let mut rng = rand::thread_rng();
     rng.gen_range(min..max)
@@ -43,6 +64,14 @@ pub fn random_on_hemisphere(normal: Vec3) -> Vec3 {
         on_uint_sphere
     } else {
         -on_uint_sphere
+    }
+}
+
+pub fn random_vector() -> Vec3 {
+    Vec3 {
+        x: random_f64_range(0.0, 1.0),
+        y: random_f64_range(0.0, 1.0),
+        z: random_f64_range(0.0, 1.0),
     }
 }
 
